@@ -21,7 +21,6 @@ export default function Sidebar() {
         onClick={() => setOpen(true)}
         className="md:hidden fixed top-5 left-4 z-50 text-black rounded"
       >
-        
         <Bars3BottomLeftIcon className="h-6 w-6 text-gray-500" />
       </button>
 
