@@ -30,7 +30,7 @@ export default function Header() {
   }
 
   return (
-    <header className="h-16 bg-white shadow flex items-center justify-end px-6">
+    <header className="h-15 bg-white shadow flex items-center justify-end px-6">
       <div className="relative" ref={ref}>
         {/* Profile button */}
         <button
@@ -49,7 +49,7 @@ export default function Header() {
 
         {/* Dropdown */}
         {open && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow">
+          <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow">
             <a
               href="/dashboard/profile"
               className="block px-4 py-2 hover:bg-gray-100"

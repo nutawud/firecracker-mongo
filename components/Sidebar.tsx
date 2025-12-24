@@ -11,7 +11,8 @@ export default function Sidebar() {
 
   const menu = [
     { name: "Dashboard", path: "/dashboard" },
-    { name: "Users", path: "/dashboard/users" },
+    { name: "รายการสั่งซื้อ", path: "/dashboard/order" },
+    { name: "ประเภท", path: "/dashboard/categorie" },
   ];
 
   return (
