@@ -30,7 +30,7 @@ export default function Header() {
   }
 
   return (
-    <header className="h-15 bg-white shadow flex items-center justify-end px-6">
+    <header className="fixed h-15 bg-white shadow flex items-center justify-end px-5 w-full md:w-[calc(100%-16rem)]">
       <div className="relative" ref={ref}>
         {/* Profile button */}
         <button

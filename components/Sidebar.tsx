@@ -13,6 +13,7 @@ export default function Sidebar() {
     { name: "Dashboard", path: "/dashboard" },
     { name: "รายการสั่งซื้อ", path: "/dashboard/order" },
     { name: "ประเภท", path: "/dashboard/categorie" },
+    { name: "ตารางขายส่ง", path: "/dashboard/wholesale-table" },
   ];
 
   return (
