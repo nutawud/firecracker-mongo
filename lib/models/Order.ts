@@ -3,7 +3,7 @@ import mongoose, { Schema, Types } from "mongoose";
 const OrderItemSchema = new Schema({
   name: String,
   price: Number,
-  stock: Number,
+  amount: Number,
   category_id: {
     type: Types.ObjectId,
     ref: "Category",

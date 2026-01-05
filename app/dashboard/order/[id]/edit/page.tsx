@@ -15,7 +15,7 @@ type OrderItem = {
   category_id: string;
   name: string;
   price: number;
-  stock: number;
+  amount: number;
 };
 
 export default function EditOrderPage() {
@@ -61,7 +61,7 @@ export default function EditOrderPage() {
       ...form,
       orders: [
         ...form.orders,
-        { category_id: "", name: "", price: 0, stock: 1 },
+        { category_id: "", name: "", price: 0, amount: 1 },
       ],
     });
   };
@@ -159,10 +159,10 @@ export default function EditOrderPage() {
             <input
               type="number"
               className="border p-2 rounded"
-              value={item.stock}
+              value={item.amount}
               onChange={e => {
                 const items = [...form.orders];
-                items[index].stock = Number(e.target.value);
+                items[index].amount = Number(e.target.value);
                 setForm({ ...form, orders: items });
               }}
             />

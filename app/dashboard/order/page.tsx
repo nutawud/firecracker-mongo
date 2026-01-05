@@ -8,7 +8,7 @@ interface OrderItem {
   _id: string;
   name: string;
   price: number;
-  stock: number;
+  amount: number;
   category_id: number;
 }
 
@@ -77,6 +77,10 @@ export default function OrderPage() {
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">ชื่อร้าน</th>
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">วันที่สั่ง</th>
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">รายการ</th>
+              <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">จำนวน</th>
+              <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">ราคา</th>
+              <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">รวม</th>
+              <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">รวมทั้งหมด</th>
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">Action</th>
             </tr>
           </thead>
@@ -89,9 +93,38 @@ export default function OrderPage() {
                 <td className="px-3 py-2 text-sm">
                   {order.orders.map((item) => (
                     <div key={item._id} className="truncate w-48 md:w-auto">
-                      {item.name} - {item.stock} pcs - ${item.price}
+                      {item.name}
                     </div>
                   ))}
+                </td>
+                <td className="px-3 py-2 text-sm">
+                  {order.orders.map((item) => (
+                    <div key={item._id} className="truncate w-48 md:w-auto">
+                      {item.amount}
+                    </div>
+                  ))}
+                </td>
+                <td className="px-3 py-2 text-sm">
+                  {order.orders.map((item) => (
+                    <div key={item._id} className="truncate w-48 md:w-auto">
+                      {(item.price).toLocaleString("th-TH")}
+                    </div>
+                  ))}
+                </td>
+                <td className="px-3 py-2 text-sm">
+                  {order.orders.map((item) => (
+                    <div key={item._id} className="truncate w-48 md:w-auto">
+                      {(item.price * item.amount).toLocaleString("th-TH")}
+                    </div>
+                  ))}
+                </td>
+                <td className="px-3 py-2 text-sm">
+                  {order.orders
+                    .reduce(
+                      (sum, item) => sum + item.price * item.amount,
+                      0
+                    )
+                    .toLocaleString("th-TH")}
                 </td>
                 <td className="px-3 py-2 flex flex-wrap gap-1 md:gap-2">
                   <button
@@ -106,12 +139,7 @@ export default function OrderPage() {
                   >
                     Delete
                   </button>
-                  <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-2 md:px-3 py-1 rounded text-xs md:text-sm"
-                    onClick={() => router.push(`/order/${order._id}`)}
-                  >
-                    View
-                  </button>
+                  
                 </td>
               </tr>
             ))}
