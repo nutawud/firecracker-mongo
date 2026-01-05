@@ -58,19 +58,77 @@ export default function OrderPage() {
 
   return (
     <div className="">
-      <div className="p-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+      <div className="p-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between ">
           <h1 className="text-2xl font-bold">📦 Orders</h1>
           <Link
             href="/dashboard/order/create"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="mt-4 md:mt-0 inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
           >
             ➕ Create Order
           </Link>
         </div>
       </div>
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200 border border-gray-200">
+       {/* ✅ MOBILE */}
+    <div className="md:hidden space-y-4 p-4">
+      {orders.map(order => (
+        <div
+          key={order._id}
+          className="rounded-xl border bg-white p-4 shadow"
+        >
+          <div className="flex justify-between">
+            <div>
+              <p className="font-semibold">{order.name_shop}</p>
+              <p className="text-xs text-gray-500">
+                {new Date(order.order_date).toLocaleDateString("th-TH")}
+              </p>
+            </div>
+            <span className="text-sm text-blue-600">#{order.no}</span>
+          </div>
+
+          <div className="mt-3 space-y-2 text-sm">
+            {order.orders.map(item => (
+              <div key={item._id} className="flex justify-between">
+                <div>
+                  <p>{item.name}</p>
+                  <p className="text-xs text-gray-500">
+                    {item.amount} x {item.price.toLocaleString("th-TH")}
+                  </p>
+                </div>
+                <p className="font-semibold">
+                  {(item.amount * item.price).toLocaleString("th-TH")}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 flex justify-between font-bold">
+            <span>รวม</span>
+            <span className="text-green-600">
+              {order.orders.reduce((s, i) => s + i.price * i.amount, 0)
+                .toLocaleString("th-TH")}
+            </span>
+          </div>
+
+          <div className="mt-4 flex gap-2">
+            <button
+              onClick={() => router.push(`/dashboard/order/${order._id}/edit`)}
+              className="flex-1 bg-green-500 text-white py-2 rounded"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => handleDelete(order._id)}
+              className="flex-1 bg-red-500 text-white py-2 rounded"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+      <div className="hidden md:block overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 border border-gray-200 ">
           <thead className="bg-gray-100">
             <tr>
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">No</th>
