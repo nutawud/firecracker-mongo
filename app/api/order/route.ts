@@ -16,7 +16,7 @@ export async function GET(req: Request) {
 
   const [data, total] = await Promise.all([
     Order.find()
-      .populate("orders.category_id", "name price no") // 👈 JOIN
+      // .populate("orders.category_id", "name price no") // 👈 JOIN
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit),
