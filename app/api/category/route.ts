@@ -9,8 +9,8 @@ export async function GET() {
     await connectDB();
 
     const data = await Category.find()
-      .select("_id name price no")
-      .sort({ name: 1 });
+      .select("_id name price no value")
+      .sort({ value: 1 });
 
     return NextResponse.json({ data });
   } catch {

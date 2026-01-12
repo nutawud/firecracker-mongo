@@ -7,9 +7,12 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+    setLoading(true)
 
     const res = await fetch("/api/auth/login", {
       method: "POST",
@@ -17,6 +20,7 @@ export default function LoginPage() {
     });
 
     if (res.ok) {
+      setLoading(false)
       router.push("/dashboard");
     } else {
       alert("Login failed");
@@ -25,10 +29,12 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
+
       <form
         onSubmit={handleLogin}
         className="bg-white p-6 rounded shadow w-80 space-y-4"
       >
+
         <h1 className="text-xl font-bold text-center">Admin Login</h1>
 
         <input
@@ -46,8 +52,13 @@ export default function LoginPage() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button className="w-full bg-blue-600 text-white p-2 rounded">
-          Login
+        <button disabled={loading} className="w-full bg-blue-600 text-white p-2 rounded" >
+          {loading && (
+            <div className="flex items-center justify-center">
+              <div className="h-6 w-6 animate-spin rounded-full border-4 border-blue-500 border-t-transparent"></div>
+            </div>
+          )}
+          {loading ? '' : 'Login'}
         </button>
       </form>
     </div>

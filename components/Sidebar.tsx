@@ -14,6 +14,7 @@ export default function Sidebar() {
     { name: "รายการสั่งซื้อ", path: "/dashboard/order" },
     { name: "ประเภท", path: "/dashboard/categorie" },
     { name: "ตารางขายส่ง", path: "/dashboard/wholesale-table" },
+    { name: "ตารางขายส่งให้ร้าน", path: "/dashboard/stores-table" },
   ];
 
   return (

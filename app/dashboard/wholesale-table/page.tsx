@@ -6,7 +6,7 @@ export default function WholesaleTable() {
     {
       "id": "P-250",
       "name": "250 นัด",
-      "price_sell": "40",
+      "price_sell": "38",
       "price_received": "33",
       "amount_crate": 60,
       "image": "/images/product/1.jpg"
