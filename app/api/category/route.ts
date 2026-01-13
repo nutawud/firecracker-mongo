@@ -9,7 +9,7 @@ export async function GET() {
     await connectDB();
 
     const data = await Category.find()
-      .select("_id name price no value")
+      .select("_id name price no value cost")
       .sort({ value: 1 });
 
     return NextResponse.json({ data });
@@ -24,9 +24,9 @@ export async function POST(req: Request) {
     await connectDB();
 
     const body = await req.json();
-    const { name, price, no } = body;
+    const { name, price, no, cost } = body;
 
-    if (!name || !price || !no) {
+    if (!name || !price || !no || !cost) {
       return NextResponse.json(
         { message: "Missing fields" },
         { status: 400 }

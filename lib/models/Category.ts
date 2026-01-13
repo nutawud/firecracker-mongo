@@ -15,6 +15,10 @@ const CategorySchema = new Schema(
       required: true,
       unique: true, // เลขสินค้า / รหัส
     },
+    cost: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );

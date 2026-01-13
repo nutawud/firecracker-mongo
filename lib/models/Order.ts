@@ -4,6 +4,7 @@ const OrderItemSchema = new Schema({
   name: String,
   price: Number,
   amount: Number,
+  cost: Number,
   category_id: {
     type: Types.ObjectId,
     ref: "Category",

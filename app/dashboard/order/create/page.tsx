@@ -8,6 +8,7 @@ type Category = {
   name: string;
   price: number;
   no: string;
+  cost: number;
 };
 
 type OrderItem = {
@@ -15,6 +16,7 @@ type OrderItem = {
   name: string;
   price: number;
   amount: number;
+  cost: number;
 };
 
 export default function CreateOrderPage() {
@@ -42,7 +44,7 @@ export default function CreateOrderPage() {
       ...form,
       orders: [
         ...form.orders,
-        { category_id: "", name: "", price: 0, amount: 1 },
+        { category_id: "", name: "", price: 0, amount: 1 , cost: 0},
       ],
     });
   };
@@ -63,6 +65,7 @@ export default function CreateOrderPage() {
       category_id: category._id,
       name: category.name,
       price: category.price,
+      cost: category.cost,
     };
 
     setForm({ ...form, orders: items });

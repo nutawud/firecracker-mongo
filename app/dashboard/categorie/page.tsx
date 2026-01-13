@@ -7,6 +7,7 @@ type Category = {
   name: string;
   price: number;
   no: string;
+  cost: number;
 };
 
 export default function CategoryPage() {
@@ -15,6 +16,7 @@ export default function CategoryPage() {
     name: "",
     price: 0,
     no: "",
+    cost: 0
   });
   const [editingId, setEditingId] = useState<string | null>(null);
 
@@ -43,13 +45,13 @@ export default function CategoryPage() {
       body: JSON.stringify(form),
     });
 
-    setForm({ name: "", price: 0, no: "" });
+    setForm({ name: "", price: 0, no: "", cost: 0 });
     setEditingId(null);
     loadData();
   };
 
   const edit = (c: Category) => {
-    setForm({ name: c.name, price: c.price, no: c.no });
+    setForm({ name: c.name, price: c.price, no: c.no, cost: c.cost });
     setEditingId(c._id!);
   };
 
@@ -89,9 +91,18 @@ export default function CategoryPage() {
           value={form.no}
           onChange={e => setForm({ ...form, no: e.target.value })}
         />
+        <input
+          type="number"
+          className="border p-2 rounded"
+          placeholder="ราคาทุน"
+          value={form.cost}
+          onChange={e =>
+            setForm({ ...form, cost: Number(e.target.value) })
+          }
+        />
         <button
           onClick={submit}
-          className="bg-blue-600 text-white rounded px-4"
+          className="bg-blue-600 h-10 text-white rounded px-4"
         >
           {editingId ? "อัปเดต" : "เพิ่ม"}
         </button>
@@ -105,6 +116,7 @@ export default function CategoryPage() {
               <th className="p-3 text-left">ชื่อ</th>
               <th className="p-3 text-left">ราคา</th>
               <th className="p-3 text-left">No</th>
+              <th className="p-3 text-left">ราคาทุน</th>
               <th className="p-3 text-center">จัดการ</th>
             </tr>
           </thead>
@@ -114,6 +126,7 @@ export default function CategoryPage() {
                 <td className="p-3">{c.name}</td>
                 <td className="p-3">{c.price}</td>
                 <td className="p-3">{c.no}</td>
+                <td className="p-3">{c.cost}</td>
                 <td className="p-3 text-center space-x-2">
                   <button
                     onClick={() => edit(c)}
