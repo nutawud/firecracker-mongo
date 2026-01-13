@@ -4,8 +4,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+interface Stock {
+  _id: string;
+  product_code: string;
+  product_name: string;
+  amount: number;
+  cost: number;
+}
+
 export default function StockPage() {
-    const [stocks, setStocks] = useState([]);
+    const [stocks, setStocks] = useState<Stock[]>([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
@@ -61,16 +69,16 @@ export default function StockPage() {
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                    {stocks.map((s) => (
-                        <tr key={s._id} className="hover:bg-gray-50">
-                            <td className="px-3 py-2 text-sm">{s.product_code}</td>
-                            <td className="px-3 py-2 text-sm">{s.product_name}</td>
-                            <td className="px-3 py-2 text-sm">{s.amount}</td>
-                            <td className="px-3 py-2 text-sm">{s.cost}</td>
+                    {stocks.map((stock) => (
+                        <tr key={stock._id} className="hover:bg-gray-50">
+                            <td className="px-3 py-2 text-sm">{stock.product_code}</td>
+                            <td className="px-3 py-2 text-sm">{stock.product_name}</td>
+                            <td className="px-3 py-2 text-sm">{stock.amount}</td>
+                            <td className="px-3 py-2 text-sm">{stock.cost}</td>
                             <td className="px-3 py-2 flex flex-wrap gap-1 md:gap-2">
                                 <button
                                     onClick={() =>
-                                        router.push(`/dashboard/stock/${s._id}/edit`)
+                                        router.push(`/dashboard/stock/${stock._id}/edit`)
                                     }
                                     className="bg-yellow-500 text-white px-3 py-1 rounded"
                                 >
@@ -78,7 +86,7 @@ export default function StockPage() {
                                 </button>
 
                                 <button
-                                    onClick={() => handleDelete(s._id)}
+                                    onClick={() => handleDelete(stock._id)}
                                     className="bg-red-500 text-white px-3 py-1 rounded"
                                 >
                                     Delete
