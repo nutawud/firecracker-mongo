@@ -25,9 +25,9 @@ export default function DashboardPage() {
           
         </div>
       </div>
-      {data.map((option, index) => (
+      {/* {data.map((option, index) => (
             option.name
-          ))}
+          ))} */}
     </div>
   );
 }
