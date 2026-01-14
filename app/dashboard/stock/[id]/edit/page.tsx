@@ -6,6 +6,7 @@ import { useRouter, useParams } from "next/navigation";
 export default function EditStockPage() {
   const router = useRouter();
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
 
   const [form, setForm] = useState({
     product_code: "",
@@ -16,9 +17,13 @@ export default function EditStockPage() {
   });
 
   useEffect(() => {
+    setLoading(true);
     fetch(`/api/stock/${id}`, { credentials: "include" })
       .then((res) => res.json())
-      .then((data) => setForm(data));
+      .then((data) => {
+        setForm(data)
+        setLoading(false);
+  });
   }, [id]);
 
   const submit = async () => {
@@ -32,6 +37,7 @@ export default function EditStockPage() {
     router.push("/dashboard/stock");
   };
 
+  if (loading) return <div>Loading...</div>;
   return (
     <div className="p-6 max-w-md">
       <h1 className="text-xl font-bold mb-4">✏️ Edit Stock</h1>

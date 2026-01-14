@@ -1,40 +1,37 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import Stock from "@/lib/models/Stock";
+import Sale from "@/lib/models/Sale";
 
 export async function POST(req: Request) {
-    await connectDB();
+  await connectDB();
 
-    const { stock_id, qty } = await req.json();
+  const { stock_id, amount, price } = await req.json();
 
-    if (!stock_id || qty <= 0) {
-        return NextResponse.json(
-            { message: "ข้อมูลไม่ถูกต้อง" },
-            { status: 400 }
-        );
-    }
+  const stock = await Stock.findById(stock_id);
+  if (!stock) {
+    return NextResponse.json({ message: "ไม่พบสินค้า" }, { status: 404 });
+  }
 
-    const stock = await Stock.findById(stock_id);
+  if (stock.amount < amount) {
+    return NextResponse.json({ message: "สต๊อกไม่พอ" }, { status: 400 });
+  }
 
-    if (!stock) {
-        return NextResponse.json(
-            { message: "ไม่พบสินค้า" },
-            { status: 404 }
-        );
-    }
+  // 1️⃣ ตัดสต๊อก
+  stock.amount -= amount;
+  await stock.save();
 
-    if (stock.amount < qty) {
-        return NextResponse.json(
-            { message: "Stock ไม่พอ" },
-            { status: 400 }
-        );
-    }
+  // 2️⃣ insert sale
+  await Sale.create({
+    product_code: stock.product_code,
+    product_name: stock.product_name,
+    amount,
+    price,
+    cost: stock.cost,
+    total: amount * price,
+    profit: (price - stock.cost) * amount,
+    sold_at: new Date(),
+  });
 
-    stock.amount -= qty;
-    await stock.save();
-
-    return NextResponse.json({
-        success: true,
-        remaining: stock.amount,
-    });
+  return NextResponse.json({ success: true });
 }

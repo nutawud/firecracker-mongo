@@ -9,7 +9,6 @@ export async function GET() {
     await connectDB();
 
     const data = await Category.find()
-      .select("_id name price no value cost")
       .sort({ value: 1 });
 
     return NextResponse.json({ data });
@@ -24,16 +23,8 @@ export async function POST(req: Request) {
     await connectDB();
 
     const body = await req.json();
-    const { name, price, no, cost } = body;
 
-    if (!name || !price || !no || !cost) {
-      return NextResponse.json(
-        { message: "Missing fields" },
-        { status: 400 }
-      );
-    }
-
-    const category = await Category.create({ name, price, no });
+    const category = await Category.create(body);
 
     return NextResponse.json(category, { status: 201 });
   } catch {

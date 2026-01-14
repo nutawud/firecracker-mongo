@@ -23,3 +23,33 @@ export async function PUT(req: Request) {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
+
+export async function DELETE(
+    req: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        await checkAuth();
+        await connectDB();
+
+        const { id } = await params;
+
+        const category = await Category.findByIdAndDelete(id);
+
+        if (!category) {
+            return NextResponse.json(
+                { message: "category not found" },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json({
+            message: "category deleted",
+        });
+    } catch (error) {
+        return NextResponse.json(
+            { message: "Unauthorized or error" },
+            { status: 401 }
+        );
+    }
+}

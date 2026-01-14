@@ -27,6 +27,9 @@ export async function GET(req: Request) {
                         totalAmount: { $sum: "$orders.amount" },
                         totalPrice: {
                             $sum: { $multiply: ["$orders.price", "$orders.amount"] }
+                        },
+                        totalCost: {
+                            $sum: { $multiply: ["$orders.cost", "$orders.amount"] }
                         }
                     }
                 },
