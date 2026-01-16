@@ -23,6 +23,7 @@ export async function POST(req: Request) {
 
   // 2️⃣ insert sale
   await Sale.create({
+    stock_id: stock_id,
     product_code: stock.product_code,
     product_name: stock.product_name,
     amount,

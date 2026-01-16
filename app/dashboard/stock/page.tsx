@@ -11,6 +11,7 @@ interface Stock {
     amount: number;
     cost: number;
     price: number;
+    createdAt: string;
 }
 
 export default function StockPage() {
@@ -65,12 +66,17 @@ export default function StockPage() {
                         key={stock._id}
                         className="rounded-xl bg-white p-4 shadow"
                     >
-                        <div>Code: {stock.product_code}</div>
+
+                        <div className="flex justify-between">
+                            <div className="text-indigo-500"> {stock.product_code}</div>
+                            <div className="text-gray-500"> {stock.createdAt.split("T")[0]}</div>
+                        </div>
+
                         <div>ชื่อสินค้า: {stock.product_name}</div>
                         <div className="text-red-600">คงเหลือ: {stock.amount} กล่อง</div>
                         <div>ต้นทุน: {stock.cost} บาท</div>
                         <div>ราคาขาย: {stock.price} บาท</div>
-                       
+
                         <div className="mt-4 flex gap-2">
                             <button
                                 onClick={() => router.push(`/dashboard/stock/${stock._id}/edit`)}
@@ -94,6 +100,7 @@ export default function StockPage() {
                     <thead className="bg-gray-200">
                         <tr>
                             <th className="px-3 py-2 text-center text-xs md:text-sm font-medium text-gray-700">Code</th>
+                            <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">วันที่</th>
                             <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">ชื่อสินค้า</th>
                             <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">คงเหลือ</th>
                             <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">ต้นทุน</th>
@@ -105,6 +112,7 @@ export default function StockPage() {
                         {stocks.map((stock) => (
                             <tr key={stock._id} className="hover:bg-gray-50">
                                 <td className="px-3 py-2 text-sm">{stock.product_code}</td>
+                                <td className="px-3 py-2 text-sm">{stock.createdAt.split("T")[0]}</td>
                                 <td className="px-3 py-2 text-sm">{stock.product_name}</td>
                                 <td className="px-3 py-2 text-sm">{stock.amount}</td>
                                 <td className="px-3 py-2 text-sm">{stock.cost}</td>

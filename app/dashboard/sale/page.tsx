@@ -89,7 +89,7 @@ export default function SellPage() {
         if (!confirm("ยืนยันการขาย?")) return;
 
         for (const item of sellItems) {
-            await fetch("/api/sell", {
+            await fetch("/api/sale", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
