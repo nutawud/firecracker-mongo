@@ -4,7 +4,7 @@ export default function StoresTable() {
     <div>
       <div>
         <img
-          src="/images/store/list.png"
+          src="/images/store/list1.png"
           className="w-full max-w-md h-auto rounded"
         />
       </div>
