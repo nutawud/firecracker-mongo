@@ -205,6 +205,13 @@ export default function OrderPage() {
                   >
                     Delete
                   </button>
+                  <Link
+                    href={`/dashboard/order/${order._id}/print`}
+                    target="_blank" // เปิดแท็บใหม่
+                    className="bg-gray-600 hover:bg-gray-700 text-white px-2 md:px-3 py-1 rounded text-xs md:text-sm"
+                  >
+                    Print
+                  </Link>
 
                 </td>
               </tr>

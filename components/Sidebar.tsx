@@ -15,6 +15,7 @@ export default function Sidebar() {
     { name: "ประเภท", path: "/dashboard/categorie" },
     { name: "ตารางขายส่ง", path: "/dashboard/wholesale-table" },
     { name: "ตารางขายส่งให้ร้าน", path: "/dashboard/stores-table" },
+    { name: "ตารางขายส่ง(วัด)", path: "/dashboard/measure-table" },
     { name: "คลัง", path: "/dashboard/stock" },
     { name: "ขาย", path: "/dashboard/sale" },
   ];
