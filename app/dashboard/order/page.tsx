@@ -8,6 +8,7 @@ interface OrderItem {
   _id: string;
   name: string;
   price: number;
+  cost: number;       // ราคาต้นทุน
   amount: number;
   category_id: number;
 }
@@ -27,17 +28,31 @@ export default function OrderPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
+  const [searchShop, setSearchShop] = useState("");
+  const [searchDate, setSearchDate] = useState("");
+
+
 
   const fetchOrders = async (pageNum = 1) => {
     setLoading(true);
     try {
-
-      const res = await fetch(`/api/order?page=${pageNum}&limit=5`, {
-        credentials: "include",
+      const params = new URLSearchParams({
+        page: String(pageNum),
+        limit: "5",
+        shop: searchShop,
+        date: searchDate,
       });
+      const res = await fetch(
+        `/api/order?${params.toString()}`,
+        {
+          credentials: "include",
+        }
+      );
       const json = await res.json();
       setOrders(json.data);
-      setTotalPages(json.pagination.totalPages);
+      setTotalPages(
+        json.pagination.totalPages
+      );
     } catch (err) {
       console.error(err);
     } finally {
@@ -75,6 +90,42 @@ export default function OrderPage() {
           >
             ➕ Create Order
           </Link>
+        </div>
+      </div>
+      <div className="mb-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div>
+          <label className="text-sm font-medium">
+            ค้นหาชื่อร้าน
+          </label>
+          <input
+            type="text"
+            value={searchShop}
+            onChange={(e) => setSearchShop(e.target.value)}
+            placeholder="ชื่อร้าน..."
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+        <div>
+          <label className="text-sm font-medium">
+            วันที่สั่ง
+          </label>
+          <input
+            type="date"
+            value={searchDate}
+            onChange={(e) => setSearchDate(e.target.value)}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+        <div className="flex items-end">
+          <button
+            onClick={() => {
+              setPage(1);
+              fetchOrders(1);
+            }}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+          >
+            ค้นหา
+          </button>
         </div>
       </div>
       {/* ✅ MOBILE */}
@@ -144,6 +195,17 @@ export default function OrderPage() {
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">วันที่สั่ง</th>
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">รายการ</th>
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">จำนวน</th>
+              <th className="px-3 py-2 text-center text-xs md:text-sm font-medium text-gray-700 bg-yellow-100">
+                ราคา(ต้นทุน)
+              </th>
+
+              <th className="px-3 py-2 text-center text-xs md:text-sm font-medium text-gray-700 bg-yellow-100">
+                รวม(ต้นทุน)
+              </th>
+
+              <th className="px-3 py-2 text-center text-xs md:text-sm font-medium text-gray-700 bg-yellow-100">
+                รวมทั้งหมด(ต้นทุน)
+              </th>
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">ราคา</th>
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">รวม</th>
               <th className="px-3 py-2 text-left text-xs md:text-sm font-medium text-gray-700">รวมทั้งหมด</th>
@@ -170,6 +232,28 @@ export default function OrderPage() {
                     </div>
                   ))}
                 </td>
+                <td className="px-3 py-2 text-sm bg-yellow-50">
+                  {order.orders.map((item) => (
+                    <div key={item._id}>
+                      {(item.cost || 0).toLocaleString("th-TH")}
+                    </div>
+                  ))}
+                </td>
+                <td className="px-3 py-2 text-sm bg-yellow-50">
+                  {order.orders.map((item) => (
+                    <div key={item._id} className="truncate w-48 md:w-auto">
+                      {(item.cost * item.amount || 0).toLocaleString("th-TH")}
+                    </div>
+                  ))}
+                </td>
+                <td className="px-3 py-2 text-sm bg-yellow-50">
+                  {order.orders
+                    .reduce(
+                      (sum, item) => sum + (item.cost ?? 0) * (item.amount ?? 0),
+                      0
+                    )
+                    .toLocaleString("th-TH")}
+                </td>
                 <td className="px-3 py-2 text-sm">
                   {order.orders.map((item) => (
                     <div key={item._id} className="truncate w-48 md:w-auto">
@@ -177,6 +261,7 @@ export default function OrderPage() {
                     </div>
                   ))}
                 </td>
+
                 <td className="px-3 py-2 text-sm">
                   {order.orders.map((item) => (
                     <div key={item._id} className="truncate w-48 md:w-auto">
@@ -192,27 +277,34 @@ export default function OrderPage() {
                     )
                     .toLocaleString("th-TH")}
                 </td>
-                <td className="px-3 py-2 flex flex-wrap gap-1 md:gap-2">
-                  <button
-                    className="bg-green-500 hover:bg-green-600 text-white px-2 md:px-3 py-1 rounded text-xs md:text-sm"
-                    onClick={() => router.push(`/dashboard/order/${order._id}/edit`)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="bg-red-500 hover:bg-red-600 text-white px-2 md:px-3 py-1 rounded text-xs md:text-sm"
-                    onClick={() => handleDelete(order._id)}
-                  >
-                    Delete
-                  </button>
-                  <Link
-                    href={`/dashboard/order/${order._id}/print`}
-                    target="_blank" // เปิดแท็บใหม่
-                    className="bg-gray-600 hover:bg-gray-700 text-white px-2 md:px-3 py-1 rounded text-xs md:text-sm"
-                  >
-                    Print
-                  </Link>
+                <td className="px-3 py-2">
+                  <div className="flex justify-center items-center gap-2">
 
+                    <button
+                      className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs md:text-sm"
+                      onClick={() =>
+                        router.push(`/dashboard/order/${order._id}/edit`)
+                      }
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs md:text-sm"
+                      onClick={() => handleDelete(order._id)}
+                    >
+                      Delete
+                    </button>
+
+                    <Link
+                      href={`/dashboard/order/${order._id}/print`}
+                      target="_blank"
+                      className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs md:text-sm"
+                    >
+                      Print
+                    </Link>
+
+                  </div>
                 </td>
               </tr>
             ))}

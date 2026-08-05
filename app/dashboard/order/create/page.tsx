@@ -93,11 +93,13 @@ export default function CreateOrderPage() {
         <input
           className="border p-2 rounded"
           placeholder="ชื่อร้าน"
+           autoComplete="on"
           onChange={e => setForm({ ...form, name_shop: e.target.value })}
         />
         <input
           className="border p-2 rounded"
           placeholder="เลขที่ Order"
+          autoComplete="on"
           onChange={e => setForm({ ...form, no: e.target.value })}
         />
         <input

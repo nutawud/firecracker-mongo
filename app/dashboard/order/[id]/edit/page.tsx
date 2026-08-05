@@ -109,11 +109,13 @@ export default function EditOrderPage() {
         <input
           className="border p-2 rounded"
           value={form.name_shop}
+          autoComplete="on"
           onChange={e => setForm({ ...form, name_shop: e.target.value })}
         />
         <input
           className="border p-2 rounded"
           value={form.no}
+          autoComplete="on"
           onChange={e => setForm({ ...form, no: e.target.value })}
         />
         <input
