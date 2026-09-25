@@ -1,3 +1,4 @@
+
 import mongoose, { Schema, Types } from "mongoose";
 
 const OrderItemSchema = new Schema({
@@ -17,13 +18,25 @@ const OrderSchema = new Schema(
     name_shop: String,
     order_date: {
       type: Date,
-      default: Date.now, // ✅ วันนี้
+      default: Date.now,
     },
+
     no: String,
+
+    // =========================
+    // Payment Status
+    // =========================
+    payment_status: {
+      type: String,
+      enum: ["paid", "unpaid"],
+      default: "unpaid",
+    },
+
     orders: [OrderItemSchema],
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-export default mongoose.models.Order ||
-  mongoose.model("Order", OrderSchema);
+export default mongoose.models.Order || mongoose.model("Order", OrderSchema);
