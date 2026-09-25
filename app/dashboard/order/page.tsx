@@ -152,7 +152,7 @@ export default function OrderPage() {
             : "bg-red-500 hover:bg-red-600 text-white"
         }`}
       >
-        {isPaid ? "✓ จ่ายแล้ว" : "ยังไม่จ่าย"}
+        {isPaid ? "จ่ายแล้ว" : "ยังไม่จ่าย"}
       </button>
     );
   };
